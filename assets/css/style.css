@@ -1,0 +1,33 @@
+body {
+    background: black;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: white;
+}
+
+ #banner {
+     height: 400px;
+     width: 100%;
+ }  
+
+ #title {
+     color: greenyellow;
+     text-align: center;
+     padding-bottom: 15px;
+ }
+
+ #tableImage, #tablePuzzle {
+     border-style: dashed;
+     border-color: chartreuse;
+     padding: 15px;
+ }
+
+ #tableImage {
+     text-align: center;
+ }
+
+ p, h5 {
+     text-align: center;
+ }
+
+
+
