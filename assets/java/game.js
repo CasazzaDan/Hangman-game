@@ -1,72 +1,96 @@
 //Variables
-var words =["sofles", "wildstyle", "graffiti", "subway"];
-var wins = 0;
-var guessLeft = 10;
+var words = ["sofles", "wildstyle", "graffiti", "subway", "throwie", "burner", "areosol"];
 var guessed = [];
 var answerArray = [];
+var selectedWord = "";
+var remainingLetters = 0;
 
-
-var winsTab = document.getElementById('wins');
-var guessesTab = document.getElementById('guessLeft');
-var guessedTab = document.getElementById('guessed');
-var wordLineTab = document.getElementById('wordLine');
-
-// Displays
-function display() {
-    wordLineTab.innerText = answerArray.join(" ");
-    winsTab.innerText = 'Wins: ' + wins;
-    guessesTab.innerText = 'Guesses Left: ' + guessLeft;
-    guessedTab.innerText = guessed;
-}
-
+//Game stats
+var wins = 0;
+var losses = 0;
+var guessLeft = 10;
 
 //Functions
-var selectedWord = words[Math.floor(Math.random() * words.length)];
 
+function display() {
+    document.getElementById('wordLine').innerText = answerArray.join(" ");
+    document.getElementById('wins').innerText = 'Wins: ' + wins;
+    document.getElementById('losses').innerText = 'Losses: ' + losses;
+    document.getElementById('guessLeft').innerText = 'Guesses Left: ' + guessLeft;
+    document.getElementById('guessed').innerText = guessed;
+}
 
-var remainingLetters = selectedWord.length;
-reset ();
-function reset() {
+function startGame() {
     guessLeft = 10;
-    guessesTab.innerText = 'Guesses Left: ' + guessLeft;
     guessed = [];
-    guessedTab.innerText = 'You Guessed: ' + guessed;
+    answerArray = [];
     selectedWord = words[Math.floor(Math.random() * words.length)];
+    remainingLetters = selectedWord.length;
     console.log(selectedWord);
+    console.log(remainingLetters);
     for (var i = 0; i < selectedWord.length; i++) {
         answerArray[i] = '_';
     }
     display();
 }
 
+function checkLetter(userGuess) {
+    var goodLetter = false;
 
-
-document.onkeypress = function(event) {
-    let userGuess = event.key;
-
-    for (var j = 0; j < selectedWord.length; j++) {
+    for (j = 0; j < selectedWord.length; j++) {
         if (selectedWord[j] === userGuess) {
-          answerArray[j] = userGuess; 
-          --remainingLetters;
-            display();
+            goodLetter = true;
         }
     }
 
-    if (userGuess === answerArray) {
-        --remainingLetters;
+    if (goodLetter) {
+        for (i = 0; i < selectedWord.length; i++) {
+            if (selectedWord[i] === userGuess) {
+                answerArray[i] = userGuess;
+                remainingLetters--;
+                console.log(remainingLetters);
+                display();
+            }
+        }
     }
-
     else {
-        guessed.push(userGuess);
         guessLeft--;
-        display();
     }
 
-    
+    console.log("guessed array: " + guessed);
+    display();
+    checkRound();
+}
 
+function checkRound() {
+    if (guessLeft === 0) {
+        losses++;
+        display();
+        alert("You weren't able to guess the word in time! :(");
+        startGame();
+    }
+    else if (remainingLetters === 0) {
+        wins++;
+        display();
+        alert("NICE! You guessed the word!");
+        setTimeout(function () { startGame(); }, 2000);
+    }
 }
 
 
 
+document.onkeypress = function (event) {
+    let userGuess = event.key;
 
-//If else statments and loops
+
+    for (i = 0; i < selectedWord.length; i++) {
+        if (userGuess === guessed[i]) {
+            alert("You've already tried that letter!")
+            return;
+        }
+    }
+    guessed.push(userGuess);
+    checkLetter(userGuess);
+}
+
+startGame();
