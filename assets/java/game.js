@@ -59,7 +59,6 @@ function checkLetter(userGuess) {
 
     console.log("guessed array: " + guessed);
     display();
-    checkRound();
 }
 
 function checkRound() {
@@ -67,6 +66,7 @@ function checkRound() {
         losses++;
         display();
         alert("You weren't able to guess the word in time! :(");
+        loseScreen();
         startGame();
     }
     else if (remainingLetters === 0) {
@@ -76,8 +76,6 @@ function checkRound() {
         setTimeout(function () { startGame(); }, 2000);
     }
 }
-
-
 
 document.onkeypress = function (event) {
     let userGuess = event.key;
@@ -91,6 +89,7 @@ document.onkeypress = function (event) {
     }
     guessed.push(userGuess);
     checkLetter(userGuess);
+    checkRound();
 }
 
 startGame();
